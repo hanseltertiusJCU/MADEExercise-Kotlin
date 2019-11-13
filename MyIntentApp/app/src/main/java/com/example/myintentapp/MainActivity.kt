@@ -6,8 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    private lateinit var tvResult : TextView
+
+    companion object {
+        private const val REQUEST_CODE = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,11 +25,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val btnMoveWithDataActivity : Button = findViewById(R.id.btn_move_activity_data)
         val btnMoveWithObject : Button = findViewById(R.id.btn_move_activity_object)
         val btnDialPhone : Button = findViewById(R.id.btn_dial_number)
+        val btnMoveForResult : Button = findViewById(R.id.btn_move_for_result)
 
         btnMoveActivity.setOnClickListener(this)
         btnMoveWithDataActivity.setOnClickListener(this)
         btnMoveWithObject.setOnClickListener(this)
         btnDialPhone.setOnClickListener(this)
+        btnMoveForResult.setOnClickListener(this)
+
+        tvResult = findViewById(R.id.tv_result)
     }
 
     override fun onClick(v: View) {
@@ -32,7 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_move_activity_data -> {
-                val moveWithDataIntent = Intent(this@MainActivity, MoveActivity::class.java)
+                val moveWithDataIntent = Intent(this@MainActivity, MoveWithDataActivity::class.java)
                 moveWithDataIntent.putExtra(MoveWithDataActivity.EXTRA_NAME, "DicodingAcademy Boy")
                 moveWithDataIntent.putExtra(MoveWithDataActivity.EXTRA_AGE, 5)
                 startActivity(moveWithDataIntent)
@@ -55,6 +67,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val phoneNumber = "081210841382"
                 val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                 startActivity(dialPhoneIntent)
+            }
+
+            R.id.btn_move_for_result -> {
+                val moveForResultIntent = Intent(this@MainActivity, MoveForResultActivity::class.java)
+                startActivityForResult(moveForResultIntent, REQUEST_CODE)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == MoveForResultActivity.RESULT_CODE){
+                val selectedValue = data?.getIntExtra(MoveForResultActivity.EXTRA_SELECTED_VALUE, 0)
+                tv_result.text = "Hasil : $selectedValue"
             }
         }
     }
