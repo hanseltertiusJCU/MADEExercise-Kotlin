@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.example.mynavigation.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
@@ -54,6 +54,12 @@
         <deepLink
             android:id="@+id/deepLink2"
             app:uri="https://www.dicoding.com/detail/{name}" />
+        <action
+            android:id="@+id/action_detailCategoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>
